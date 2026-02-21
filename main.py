@@ -113,7 +113,11 @@ def main():
     dataset_dir = "./data"  # 作業ディレクトリ下にDLするよう再設定
     batch_size = 256
     epochs = 3
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device(
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps" if torch.backends.mps.is_available() else "cpu"
+    )
     logger.info(f"Using device: {device}")
 
     # 2. データ準備
