@@ -15,23 +15,23 @@ This repository is based on the research presented in:
 
 ### Theoretical Background
 
-IIC aims to learn a function $ \Phi $, represented by a deep neural network, that maps an input image $ x $ and its augmented counterpart $ x' $ into a probability distribution over $ C $ clusters.
-The core objective is to **maximize the Mutual Information (MI)** between the cluster assignment predictions of $ x $ and $ x' $.
+IIC aims to learn a function $\Phi$, represented by a deep neural network, that maps an input image $x$ and its augmented counterpart $x'$ into a probability distribution over $C$ clusters.
+The core objective is to **maximize the Mutual Information (MI)** between the cluster assignment predictions of $x$ and $x'$.
 
-Let $ \Phi(x) $ and $ \Phi(x') $ denote the output probability mass functions over the target classes. By treating the predicted cluster assignments as random variables $ Z $ and $ Z' $, the training objective is to maximize their mutual information $ I(Z; Z') $:
+Let $\Phi(x)$ and $\Phi(x')$ denote the output probability mass functions over the target classes. By treating the predicted cluster assignments as random variables $Z$ and $Z'$, the training objective is to maximize their mutual information $I(Z; Z')$:
 
 $$ I(Z; Z') = H(Z) - H(Z | Z') = \sum*{c=1}^C \sum*{c'=1}^C P(z=c, z'=c') \ln \frac{P(z=c, z'=c')}{P(z=c) P(z'=c')} $$
 
 Where:
 
-- $ \mathbf{P} $ is the $ C \times C $ joint probability matrix, computed by averaging $ \Phi(x) [\Phi(x')]^T $ over a batch.
-- To enforce symmetry (as the order of $ x $ and $ x' $ is interchangeable), the joint distribution is symmetrized: $ \mathbf{P}\_{sym} = \frac{\mathbf{P} + \mathbf{P}^T}{2} $.
-- The marginal distributions $ P(z=c) $ and $ P(z'=c') $ are obtained by summing the joint probability matrix over its rows and columns, respectively.
+- $\mathbf{P}$ is the $C \times C$ joint probability matrix, computed by averaging $\Phi(x) [\Phi(x')]^T$ over a batch.
+- To enforce symmetry (as the order of $x$ and $x'$ is interchangeable), the joint distribution is symmetrized: $\mathbf{P}\_{sym} = \frac{\mathbf{P} + \mathbf{P}^T}{2}$.
+- The marginal distributions $P(z=c)$ and $P(z'=c')$ are obtained by summing the joint probability matrix over its rows and columns, respectively.
 
 By maximizing mutual information, the network is naturally encouraged to:
 
-1. **Maximize Predictability:** Ensure that predictions for different augmented views of the same image are consistent, thereby reducing the conditional entropy $ H(Z | Z') $.
-2. **Promote Uniformity:** Distribute cluster assignments uniformly across all $ C $ clusters, avoiding trivial solutions where all images are assigned to a single, identical class (which maximizes the marginal entropy $ H(Z) $).
+1. **Maximize Predictability:** Ensure that predictions for different augmented views of the same image are consistent, thereby reducing the conditional entropy $H(Z | Z')$.
+2. **Promote Uniformity:** Distribute cluster assignments uniformly across all $C$ clusters, avoiding trivial solutions where all images are assigned to a single, identical class (which maximizes the marginal entropy $H(Z)$).
 
 ## Overview
 
